@@ -1,1 +1,3 @@
-# gigaverb
+# gigaverb~
+
+Pd port of gigaverb~.
