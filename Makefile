@@ -14,4 +14,5 @@ suppress-wunused := yes
 datafiles = gigaverb~-help.pd gigaverb~-meta.pd output~.pd voice.wav
 
 # include Makefile.pdlibbuilder from submodule directory 'pd-lib-builder'
-include Makefile.pdlibbuilder
+PDLIBBUILDER_DIR=./pd-lib-builder/
+include $(PDLIBBUILDER_DIR)/Makefile.pdlibbuilder
