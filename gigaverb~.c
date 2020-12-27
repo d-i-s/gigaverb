@@ -3,8 +3,8 @@
   kouhia at nic.funet.fi
 
   Max/MSP port 2004 by Olaf Matthes, <olaf.matthes@gmx.de>
-  Pd port 2015 by Marco Matteo Markidis, <mm.markidis@gmail.com>
-  Copyright (C) 2015 Marco Matteo Markidis
+  Pd-port 2015 by Marco Matteo Markidis, <mm.markidis@gmail.com>
+  Copyright (C) 2015-20 Marco Matteo Markidis
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -454,7 +454,7 @@ int ff_round(float f) {
   return *((int*)&f) - 0x4b400000;
 }
 
-char *version = "gigaverb~ 1.0test3: \n1999 Juhana Sadeharju \n2004 Olaf Matthes \n2015 Marco Matteo Markidis";
+char *version = "gigaverb~ 1.0test3: \n1999 Juhana Sadeharju \n2004 Olaf Matthes \n2015-20 Marco Matteo Markidis";
 
 ty_gverb *gigaverb_new(t_symbol *s, short argc, t_atom *argv)
 {
@@ -772,9 +772,17 @@ void gigaverb_print(ty_gverb *p)
 void gigaverb_tilde_setup(void)
 {
   t_class *c;
+#if PD_FLOATSIZE == 32  
   gigaverb_class = class_new(gensym("gigaverb~"), (t_newmethod)gigaverb_new,
 			     (t_method)gigaverb_free, sizeof(ty_gverb),
 			     0, A_GIMME, 0);
+#elif PD_FLOATSIZE == 64
+  gigaverb_class = class_new64(gensym("gigaverb~"), (t_newmethod)gigaverb_new,
+			     (t_method)gigaverb_free, sizeof(ty_gverb),
+			     0, A_GIMME, 0);
+#else
+#error [gigaverb~]: invalid FLOATSIZE: must be 32 or 64
+#endif  
   CLASS_MAINSIGNALIN(gigaverb_class, ty_gverb, x_f);
   c = gigaverb_class;
   class_addmethod(c,(t_method)gigaverb_dsp, gensym("dsp"), 0);
